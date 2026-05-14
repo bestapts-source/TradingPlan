@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 МОДУЛЬ: Дневник · НЕ ТРОГАТЬ без необходимости — здесь живут данные
-API: https://script.google.com/macros/s/AKfycbyP1USuGcg3vyrC-2Qi0hWh8iZ4ISjyWkGsn6p-I4Sfkbo8n4-Ziq5FEBnCqAs6LCXn/exec
+API: https://script.google.com/macros/s/AKfycbzjHFJsyxSCviQOeMsYIA6uoKGh646haYuEFGhfb-0FG0g1PSyN4AeTTgR8eVX3ffY/exec
 Sheets ID: 1F_IBUe3urcC5FMo51KbMPnmN3tnIvMaLYq8iY99ku1U · Лист: Journal 1
 -->
 <html lang="ru">
@@ -88,7 +88,7 @@ Sheets ID: 1F_IBUe3urcC5FMo51KbMPnmN3tnIvMaLYq8iY99ku1U · Лист: Journal 1
 
 <script src="nav.js"></script>
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbyP1USuGcg3vyrC-2Qi0hWh8iZ4ISjyWkGsn6p-I4Sfkbo8n4-Ziq5FEBnCqAs6LCXn/exec';
+const API = 'https://script.google.com/macros/s/AKfycbzjHFJsyxSCviQOeMsYIA6uoKGh646haYuEFGhfb-0FG0g1PSyN4AeTTgR8eVX3ffY/exec';
 let trades = [];
 
 const actionLabel = { 'open':'Открыл', 'close-win':'Закрыл ✓', 'close-loss':'Стоп ✗', 'adjust':'Стоп →' };
@@ -108,7 +108,7 @@ async function apiCall(params) {
 async function loadTrades() {
   setStatus('Загружаю...', 'var(--amber)');
   try {
-    const data = await apiCall({ action: 'read' });
+    const data = await apiCall({ action: 'read', sheet: 'journal' });
     if (!data.ok) throw new Error('API error');
     trades = (data.trades || []).map(row => ({
       id:      row['ID'],
@@ -158,7 +158,7 @@ async function saveEntry() {
   setStatus('Сохраняю...', 'var(--amber)');
 
   try {
-    const res = await apiCall({ action: editId ? 'update' : 'save', trade: JSON.stringify(trade) });
+    const res = await apiCall({ action: editId ? 'update' : 'save', sheet: 'journal', trade: JSON.stringify(trade) });
     if (!res.ok) throw new Error();
     setStatus('Сохранено ✓', 'var(--green)');
     if (editId) cancelEdit(); else clearForm();
@@ -209,7 +209,7 @@ async function deleteEntry(id) {
   if (!confirm('Удалить запись?')) return;
   setStatus('Удаляю...', 'var(--amber)');
   try {
-    const res = await apiCall({ action: 'delete', id: String(id) });
+    const res = await apiCall({ action: 'delete', sheet: 'journal', id: String(id) });
     if (!res.ok) throw new Error();
     setStatus('Удалено ✓', 'var(--green)');
     await loadTrades();
