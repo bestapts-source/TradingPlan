@@ -167,8 +167,8 @@ function calcPos() {
     ${ticker ? `<strong>${ticker}</strong> &nbsp;` : ''}<strong>@$${entry}</strong> &nbsp; Стоп $${stop}<br>
     Лот: <span class="big">${lot} акций</span> &nbsp; ($${posSize.toLocaleString('ru')})<br>
     Риск: <strong>$${actualRisk.toFixed(0)}</strong> (${riskPct}% капитала)<br>
-    Цель 2R → $${rr2.toFixed(2)}: <strong>+$${profit2.toFixed(0)}</strong><br>
-    Цель 3R → $${rr3.toFixed(2)}: <strong>+$${profit3.toFixed(0)}</strong>
+    Цель 2R → $${rr2.toFixed(2)}: <strong>+$${profit2.toFixed(0)}</strong> <span style="color:var(--muted);font-size:12px;">(+${(profit2/posSize*100).toFixed(1)}% от позиции)</span><br>
+    Цель 3R → $${rr3.toFixed(2)}: <strong>+$${profit3.toFixed(0)}</strong> <span style="color:var(--muted);font-size:12px;">(+${(profit3/posSize*100).toFixed(1)}% от позиции)</span>
     ${rrActual ? `<br>Твоя цель: <strong>${rrActual}R</strong>${rrWarn}` : ''}${sizeWarn}
   `;
 
